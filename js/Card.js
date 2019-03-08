@@ -19,18 +19,50 @@ function Card(dataLine) {
 	this.rarity = this.dataParts[i++];
 	this.reference = this.dataParts[i++];
 
-	this.buildResultListDiv();
+	if (this.imgFile.includes(".jpg")) {
+		this.imgFile = this.imgFile.replace(".jpg","");
+	}
+
+	this.buildResultListDivs();
 }
 
-Card.prototype.buildResultListDiv = function() {
+Card.prototype.buildResultListDivs = function() {
+	var self = this;
+
 	var theDiv = document.createElement("div");
 	theDiv.classList.add("resultCard");
+
+	var nameDiv = document.createElement("div");
+	nameDiv.innerText = this.name;
+	theDiv.appendChild(nameDiv);
 
 	var theImg = document.createElement("img");
 	theImg.src = cardImageBaseUrl + this.imgFile + ".jpg";
 	theDiv.appendChild(theImg);
 
+	theDiv.onclick = function(e){
+		cardFilterTextBox.value = self.imgFile;
+		cardFilterChanged();
+	};
+
 	this.resultListDiv = theDiv;
+
+	// --- //
+
+	theDiv = document.createElement("div");
+	theDiv.classList.add("resultCard");
+	theDiv.classList.add("nameOnly");
+
+	nameDiv = document.createElement("div");
+	nameDiv.innerText = this.name;
+	theDiv.appendChild(nameDiv);
+
+	theDiv.onclick = function(e){
+		cardFilterTextBox.value = self.imgFile;
+		cardFilterChanged();
+	};
+
+	this.nameOnlyDiv = theDiv;
 };
 
 Card.prototype.toString = function() {

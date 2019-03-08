@@ -5,14 +5,34 @@ var cardImageBaseUrl = "http://www.redemptionquick.com/lackey/sets/setimages/gen
 
 var cardListText = "";
 var cardFilterTextBox;
+var filterEchoDiv;
 var resultList;
 
 window.requestAnimationFrame(function () {
 	cardFilterTextBox = document.getElementById("cardFilterTextBox");
 	resultList = document.getElementById("resultList");
+	filterEchoDiv = document.getElementById("filterEcho");
 
 	loadCardListText();
+
+	prepareCardFilterTextBox();
+
+	document.getElementById("filterNowButton").onclick = function(e){
+		cardFilterChanged();
+	};
 });
+
+function prepareCardFilterTextBox() {
+	cardFilterTextBox.oninput = function(e){
+		cardFilterChanged();
+	};
+	cardFilterTextBox.onkeypress = function(e){
+		var code = (e.keyCode ? e.keyCode : e.which);
+		 if(code == 13) {
+		   cardFilterChanged();
+		 }
+	};
+}
 
 function loadCardListText() {
 	$.get(cardDataUrl, function(data) {
@@ -55,34 +75,58 @@ function cardFilterChanged() {
 	}, 400);
 }
 
+var requiredFilterLength = 3;
 function filterCards() {
-	var filterTextFull = cardFilterTextBox.value.toUpperCase();
-	if (filterTextFull.length > 3) {
-		var filterTextList = filterTextFull.split(";");
-		debug(filterTextList);
-		var resultCards = [];
-		for (var i in cardList) {
-			var card = cardList[i];
-			for (var filterTextIndex in filterTextList) {
-				var filterTextChunk = filterTextList[filterTextIndex];
-				if (card.dataLine.toUpperCase().includes(filterTextChunk)) {
-					resultCards.push(card);
-					continue;
-				}
-			}
-		}
+	var filterTextFull = cardFilterTextBox.value.trim().toUpperCase();
+	filterEchoDiv.innerText = filterTextFull;
+	
+	var filterTextList = filterTextFull.split(";");
+	debug(filterTextList);
 
-		debug("--- Filter Results ---");
-		// clear resultList
-		while (resultList.lastChild) {
-			resultList.removeChild(resultList.lastChild);
-		}
-		for (var i in resultCards) {
-			var card = resultCards[i];
-			if (i < 5) {
-				debug(card);
+	var resultCards = [];
+
+	for (var i in cardList) {
+		var card = cardList[i];
+		for (var filterTextIndex in filterTextList) {
+			var filterText = filterTextList[filterTextIndex];
+			if (filterText.length >= requiredFilterLength
+					&& cardMatchesFilterText(card, filterText)) {
+				resultCards.push(card);
 			}
+		}
+	}
+
+	debug("--- Filter Results ---");
+	// clear resultList
+	while (resultList.lastChild) {
+		resultList.removeChild(resultList.lastChild);
+	}
+	for (var i in resultCards) {
+		var card = resultCards[i];
+		if (i < 5) {
+			debug(card);
 			resultList.appendChild(card.resultListDiv);
+		} else {
+			resultList.appendChild(card.nameOnlyDiv);
 		}
 	}
 }
+
+function cardMatchesFilterText(card, filterText) {
+	var filterTextChunks = filterText.trim().split(",");
+	var chunkFound = false;
+	for (var chunkIndex in filterTextChunks) {
+		var filterTextChunk = filterTextChunks[chunkIndex].trim();
+		if (card.dataLine.toUpperCase().includes(filterTextChunk)) {
+			chunkFound = true;
+		} else {
+			chunkFound = false;
+		}
+		if (!chunkFound) {
+			return false;
+		}
+	}
+	return chunkFound;
+}
+
+
