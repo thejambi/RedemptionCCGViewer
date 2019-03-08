@@ -38,6 +38,8 @@ Card.prototype.buildResultListDivs = function() {
 
 	var theImg = document.createElement("img");
 	theImg.src = cardImageBaseUrl + this.imgFile + ".jpg";
+	theImg.alt = this.name;
+	theImg.title = this.name;
 	theDiv.appendChild(theImg);
 
 	theDiv.onclick = function(e){
