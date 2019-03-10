@@ -1,7 +1,8 @@
 /* Redemption Card Viewer Main */
 
-var cardDataUrl = "https://raw.githubusercontent.com/MattJBrinkman/RedemptionLackeyCCG/master/RedemptionQuick/sets/carddata.txt";
-var cardImageBaseUrl = "http://www.redemptionquick.com/lackey/sets/setimages/general/";
+var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/carddata.txt";
+// var cardImageBaseUrl = "http://www.redemptionquick.com/lackey/sets/setimages/general/";
+var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/setimages/general/";
 
 var cardListText = "";
 var cardFilterTextBox;
@@ -105,9 +106,9 @@ function filterCards() {
 		var card = resultCards[i];
 		if (i < 5) {
 			debug(card);
-			resultList.appendChild(card.resultListDiv);
+			resultList.appendChild(card.getResultListDiv());
 		} else {
-			resultList.appendChild(card.nameOnlyDiv);
+			resultList.appendChild(card.getNameOnlyDiv());
 		}
 	}
 }
