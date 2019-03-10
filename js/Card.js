@@ -41,10 +41,10 @@ Card.prototype.getResultListDiv = function() {
 		theImg.title = this.name;
 		theDiv.appendChild(theImg);
 
-		theDiv.onclick = function(e){
-			cardFilterTextBox.value = self.imgFile;
-			cardFilterChanged();
-		};
+		// theDiv.onclick = function(e){
+		// 	cardFilterTextBox.value = self.imgFile;
+		// 	cardFilterChanged();
+		// };
 
 		this.resultListDiv = theDiv;
 	}
@@ -64,8 +64,13 @@ Card.prototype.getNameOnlyDiv = function() {
 		theDiv.appendChild(nameDiv);
 
 		theDiv.onclick = function(e){
-			cardFilterTextBox.value = self.imgFile;
-			cardFilterChanged();
+			// cardFilterTextBox.value = self.imgFile;
+			// cardFilterChanged();
+			var theImg = document.createElement("img");
+			theImg.src = cardImageBaseUrl + self.imgFile + ".jpg";
+			theImg.alt = self.name;
+			theImg.title = self.name;
+			this.appendChild(theImg);
 		};
 
 		this.nameOnlyDiv = theDiv;
