@@ -90,7 +90,7 @@ function cardFilterChanged() {
 }
 
 function updateSearchLinkTag() {
-	var urlParams = "f=" + cardFilterTextBox.value.trim();
+	var urlParams = "f=" + encodeURIComponent(cardFilterTextBox.value.trim());
 	if (compressSearchForShareLink) {
 		urlParams = LZString.compressToEncodedURIComponent(filterTextFull);
 	}

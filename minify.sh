@@ -1,12 +1,15 @@
 #!/bin/bash
 
-previouspath=$(ls psmin*)
+previouspath=$(ls rvmin*)
 echo Replacing: $previouspath
 
-rm psmin*.js
+rm rvmin*.js
 
 timestamp=$(date "+%Y%m%d-%H%M%S")
-filepath="psmin_$timestamp.js"
+##### Following line for rvmin_TIMESTAMP.js
+# filepath="rvmin_$timestamp.js"
+##### Following line for rvmin.js always
+filepath="rvmin.js"
 echo With: $filepath
 
 # uglifyjs js/*.js js/*/*.js -o $filepath
