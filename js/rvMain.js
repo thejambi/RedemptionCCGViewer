@@ -24,10 +24,11 @@ window.requestAnimationFrame(function() {
 
 	if (QueryString.f) {
 		cardFilterTextBox.value = QueryString.f;
-		cardFilterChanged();
 	}
 
 	searchLinkTag.href = window.location.href;
+
+	cardFilterChanged();
 });
 
 function setBaseUrl() {
@@ -132,6 +133,10 @@ function filterCards() {
 			resultList.appendChild(card.getNameOnlyDiv());
 		}
 	}
+
+	if (resultCards.length === 0) {
+		resultList.appendChild(getAboutDiv());
+	}
 }
 
 function cardMatchesFilterText(card, filterText) {
@@ -153,5 +158,6 @@ function cardMatchesFilterText(card, filterText) {
 
 function getAboutDiv() {
 	var theDiv = document.createElement("div");
-	theDiv.innerHtml = "Search for cards based on name, set, ability, and more. Use <strong>,</strong> to add another criteria (so, search for <strong>Adam,Fall of Man</strong> to find cards that match both \"Fall of Man\" and \"Adam\". Use <strong>;</strong> to add another search.";
+	theDiv.innerHTML = "Search for cards based on name, set, ability, and more. Use <strong>,</strong> to add another criteria (so, search for <strong>Adam,Fall of Man</strong> to find cards that match both \"Fall of Man\" and \"Adam\"). Use <strong>;</strong> to add another search.";
+	return theDiv;
 }
