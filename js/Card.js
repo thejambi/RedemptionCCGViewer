@@ -25,57 +25,43 @@ function Card(dataLine) {
 }
 
 Card.prototype.getResultListDiv = function() {
-	if (!this.resultListDiv) {
-		var self = this;
+	var theDiv = document.createElement("div");
+	theDiv.classList.add("resultCard");
 
-		var theDiv = document.createElement("div");
-		theDiv.classList.add("resultCard");
+	var nameDiv = document.createElement("div");
+	nameDiv.innerText = this.name;
+	theDiv.appendChild(nameDiv);
 
-		var nameDiv = document.createElement("div");
-		nameDiv.innerText = this.name;
-		theDiv.appendChild(nameDiv);
+	var theImg = document.createElement("img");
+	theImg.src = cardImageBaseUrl + this.imgFile + ".jpg";
+	theImg.alt = this.name;
+	theImg.title = this.name;
+	theDiv.appendChild(theImg);
 
-		var theImg = document.createElement("img");
-		theImg.src = cardImageBaseUrl + this.imgFile + ".jpg";
-		theImg.alt = this.name;
-		theImg.title = this.name;
-		theDiv.appendChild(theImg);
-
-		// theDiv.onclick = function(e){
-		// 	cardFilterTextBox.value = self.imgFile;
-		// 	cardFilterChanged();
-		// };
-
-		this.resultListDiv = theDiv;
-	}
-	return this.resultListDiv;
+	return theDiv;
 };
 
 Card.prototype.getNameOnlyDiv = function() {
-	if (!this.nameOnlyDiv) {
-		var self = this;
+	var self = this;
 
-		var theDiv = document.createElement("div");
-		theDiv.classList.add("resultCard");
-		theDiv.classList.add("nameOnly");
+	var theDiv = document.createElement("div");
+	theDiv.classList.add("resultCard");
+	theDiv.classList.add("nameOnly");
 
-		var nameDiv = document.createElement("div");
-		nameDiv.innerText = this.name;
-		theDiv.appendChild(nameDiv);
+	var nameDiv = document.createElement("div");
+	nameDiv.innerText = this.name;
+	theDiv.appendChild(nameDiv);
 
-		theDiv.onclick = function(e){
-			// cardFilterTextBox.value = self.imgFile;
-			// cardFilterChanged();
-			var theImg = document.createElement("img");
-			theImg.src = cardImageBaseUrl + self.imgFile + ".jpg";
-			theImg.alt = self.name;
-			theImg.title = self.name;
-			this.appendChild(theImg);
-		};
+	theDiv.onclick = function(e){
+		var theImg = document.createElement("img");
+		theImg.src = cardImageBaseUrl + self.imgFile + ".jpg";
+		theImg.alt = self.name;
+		theImg.title = self.name;
+		this.appendChild(theImg);
+		this.onclick = null;
+	};
 
-		this.nameOnlyDiv = theDiv;
-	}
-	return this.nameOnlyDiv;
+	return theDiv;
 };
 
 Card.prototype.toString = function() {
