@@ -26,6 +26,10 @@ window.requestAnimationFrame(function() {
 		cardFilterTextBox.value = QueryString.f;
 	}
 
+	document.getElementById("siteHeading").onclick = function(e){
+		window.location.href = baseUrl;
+	};
+
 	searchLinkTag.href = window.location.href;
 
 	cardFilterChanged();

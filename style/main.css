@@ -4,6 +4,10 @@ body {
 	color: #cac8bf;
 }
 
+#siteHeading {
+	cursor: pointer;
+}
+
 .resultCard {
 	margin-bottom: 4px;
 }
