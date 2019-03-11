@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Redemption CCG Card Viewer</title>
+  <title>Redemption CCG Viewer</title>
 
   <link href="style/main.css" rel="stylesheet" type="text/css">
 
@@ -29,18 +29,18 @@
 
 <body ontouchstart="">
   <div class="header">
-    <h1 id='siteHeading'>Redemption Card Viewer</h1>
+    <h1 id='siteHeading'>Redemption CCG Viewer</h1>
   </div>
 
   <div id='mainWrapper'>
 
-      <input id="cardFilterTextBox" type="text" name="cardFilterTextBox" value="" />
-      &nbsp;<button id="filterNowButton">Filter</button>
+      <input id="cardFilterTextBox" class="filterTextBox" type="text" name="cardFilterTextBox" value="" />
+      <!-- &nbsp;<button id="filterNowButton">Filter</button> -->
+      &nbsp;<span id="shareLink"><a id="searchLink" href="">Link to this search</a></span>
       <div id="filterEcho"></div>
       <br />
       <div id="resultList">
         <div class="resultCard">
-          <img src="https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/setimages/general/The_Second_Coming_(CoW).jpg" />
         </div>
       </div>
   </div>
@@ -63,7 +63,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
   <!-- Compressed -->
-  <script src="psmin_20190310-140509.js"></script>
+  <script src="psmin_20190310-214143.js"></script>
 </body>
 
 </html>

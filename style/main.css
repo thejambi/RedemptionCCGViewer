@@ -1,6 +1,19 @@
 
+body {
+	background: #3b3b39;
+	color: #cac8bf;
+}
+
 .resultCard img {
 	min-height: 100px;
 	min-width: 100px;
 	border: 1px solid black;
+}
+
+#filterEcho {
+	display: none;
+}
+
+.filterTextBox {
+	margin: 0px 0px 8px 0px;
 }

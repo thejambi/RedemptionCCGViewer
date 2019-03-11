@@ -2,7 +2,7 @@ var QueryString = function () {
 	var query_string = {};
 	var query = window.location.search.substring(1);
   
-	if (query.length > 0 && !(query.includes("appType="))) {
+	if (query.length > 0 && !(query.includes("appType=") || query.includes("f="))) {
 		// Decompress first
 		query = LZString.decompressFromEncodedURIComponent(query);
 	}
@@ -28,13 +28,16 @@ var QueryString = function () {
 	return query_string;
   }();
 
-var debugOn = true;
+var debugOn = false;
 
 /* Set to true if building for iOS, else set to false */
 var ios = false;
 
 /* Set to true if building for Android, else set to false */
 var runningOnAndroid = false;
+
+
+var compressSearchForShareLink = false;
 
 
 /* --- */
