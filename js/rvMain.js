@@ -92,7 +92,7 @@ function cardFilterChanged() {
 function updateSearchLinkTag() {
 	var urlParams = "f=" + encodeURIComponent(cardFilterTextBox.value.trim());
 	if (compressSearchForShareLink) {
-		urlParams = LZString.compressToEncodedURIComponent(filterTextFull);
+		urlParams = LZString.compressToEncodedURIComponent(urlParams);
 	}
 	searchLinkTag.href = baseUrl + "?" + urlParams;
 }

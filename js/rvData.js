@@ -37,7 +37,7 @@ var ios = false;
 var runningOnAndroid = false;
 
 
-var compressSearchForShareLink = false;
+var compressSearchForShareLink = true;
 
 
 /* --- */
