@@ -9,12 +9,15 @@ var filterEchoDiv;
 var resultList;
 var searchLinkTag;
 var baseUrl;
+var localStorage;
+var cardList = [];
 
 window.requestAnimationFrame(function() {
 	cardFilterTextBox = document.getElementById("cardFilterTextBox");
 	resultList = document.getElementById("resultList");
 	filterEchoDiv = document.getElementById("filterEcho");
 	searchLinkTag = document.getElementById("searchLink");
+	localStorage = new LocalStorage().storage;
 
 	setBaseUrl();
 
@@ -54,30 +57,17 @@ function prepareCardFilterTextBox() {
 function loadCardListText() {
 	$.get(cardDataUrl, function(data) {
 		cardListText = data;
-		cardListLoaded();
+		processCardList();
 	});
 }
 
-function cardListLoaded() {
-	processCardList();
-}
-
-var cardList = [];
 function processCardList() {
 	var lines = cardListText.split("\n");
-	debug(lines.length);
 	cardList = [];
 	for (var i in lines) {
 		var line = lines[i];
 		if (i > 0 && line && line.trim() !== "") {
 			cardList.push(new Card(line));
-		}
-	}
-
-	for (var i in cardList) {
-		var card = cardList[i];
-		if (i >= cardList.length - 5) {
-			debug(card.toString());
 		}
 	}
 }
@@ -148,10 +138,68 @@ function cardMatchesFilterText(card, filterText) {
 	var chunkFound = false;
 	for (var chunkIndex in filterTextChunks) {
 		var filterTextChunk = filterTextChunks[chunkIndex].trim();
-		if (card.dataLine.toUpperCase().includes(filterTextChunk)) {
-			chunkFound = true;
+		if (filterTextChunk.includes(":")) {
+			var colonIndex = filterTextChunk.indexOf(":");
+			var cardPartStr = filterTextChunk.slice(0, colonIndex);
+			if (filterTextChunk.length > colonIndex) {
+				var matchValueStr = filterTextChunk.slice(colonIndex + 1);
+				var cardPartValue = card.dataLine;
+				switch (cardPartStr.toUpperCase()) {
+					case "NAME":
+					case "N":
+						cardPartValue = card.name;
+						break;
+					case "SET":
+					case "S":
+						cardPartValue = card.set;
+						break;
+					case "IMGFILE":
+					case "IF":
+						cardPartValue = card.imgFile;
+						break;
+					case "TYPE":
+					case "T":
+						cardPartValue = card.type;
+						break;
+					case "BRIGADE":
+					case "B":
+						cardPartValue = card.brigade;
+						break;
+					case "STRENGTH":
+					case "X/":
+						cardPartValue = card.strength;
+						break;
+					case "TOUGHNESS":
+					case "/X":
+						cardPartValue = card.toughness;
+						break;
+					case "CLASS":
+					case "C":
+						cardPartValue = card.class;
+						break;
+					case "IDENTIFIER":
+					case "I":
+						cardPartValue = card.identifier;
+						break;
+					case "ABILITY":
+					case "A":
+						cardPartValue = card.specialAbility;
+						break;
+					case "RARITY":
+					case "R":
+						cardPartValue = card.rarity;
+						break;
+					case "REFERENCE":
+					case "REF":
+						cardPartValue = card.reference;
+						break;
+					default:
+						break;
+				}
+				chunkFound = cardPartValue.toUpperCase().includes(matchValueStr);
+			}
 		} else {
-			chunkFound = false;
+			chunkFound = card.dataLine.toUpperCase().includes(filterTextChunk);
 		}
 		if (!chunkFound) {
 			return false;
@@ -162,6 +210,7 @@ function cardMatchesFilterText(card, filterText) {
 
 function getAboutDiv() {
 	var theDiv = document.createElement("div");
-	theDiv.innerHTML = "Search for cards based on name, set, ability, and more. Use <strong>,</strong> to add another criteria (so, search for <strong>Adam,Fall of Man</strong> to find cards that match both \"Fall of Man\" and \"Adam\"). Use <strong>;</strong> to add another search.";
+	theDiv.innerHTML = "Search for cards based on name, set, ability, and more. Use <strong>,</strong> to add another criteria (so, search for <strong>Adam,Fall of Man</strong> to find cards that match both \"Fall of Man\" and \"Adam\"). Use <strong>;</strong> to add another search."
+		+ "<br /><p>You can also search certain parts of cards. Begin a part of your search with any of the following to search in that part of the card.</p><p>Name: (or N:) <br />Set: (or S:) <br />Type: (or T:) <br />Brigade: (or B:) <br />Strength: (or X/:) <br />Toughness: (or /X:) <br />Class: (or C:) <br />Identifier: (or I:) <br />Ability: (or A:) <br />Rarity: (or R:) <br />Reference: (or Ref:)</p><p>Some examples... <br />Type:Dominant,Brigade:Good <br />Type:Hero,Ability:Lost Soul <br />ref:Kings 19</p>";
 	return theDiv;
 }
