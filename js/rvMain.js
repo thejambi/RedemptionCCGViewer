@@ -104,11 +104,14 @@ function filterCards() {
 
 	for (var i in cardList) {
 		var card = cardList[i];
-		for (var filterTextIndex in filterTextList) {
-			var filterText = filterTextList[filterTextIndex];
-			if (filterText.length >= requiredFilterLength
-					&& cardMatchesFilterText(card, filterText)) {
-				resultCards.push(card);
+		if (!resultCards.includes(card)) {
+			for (var filterTextIndex in filterTextList) {
+				var filterText = filterTextList[filterTextIndex];
+				if (filterText.length >= requiredFilterLength
+						&& cardMatchesFilterText(card, filterText)) {
+					resultCards.push(card);
+					break;	// Break out of filters loop, skip to next card
+				}
 			}
 		}
 	}
