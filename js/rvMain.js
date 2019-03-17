@@ -1,7 +1,7 @@
 /* Redemption CCG Viewer Main */
 
-var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/carddata.txt";
-var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/setimages/general/";
+var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/PoC-Phase-2-Spoilers/RedemptionQuick/sets/carddata.txt";
+var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/PoC-Phase-2-Spoilers/RedemptionQuick/sets/setimages/general/";
 
 var cardListText = "";
 var cardFilterTextBox;
