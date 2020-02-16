@@ -3,6 +3,11 @@
 var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/carddata.txt";
 var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/master/RedemptionQuick/sets/setimages/general/";
 
+/* For Testing: */
+var cardDataUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG/RedemptionQuick/sets/carddata.txt";
+var cardImageBaseUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG/RedemptionQuick/sets/setimages/general/";
+/* --- */
+
 var cardListText = "";
 var cardFilterTextBox;
 var filterEchoDiv;
@@ -216,4 +221,18 @@ function getAboutDiv() {
 	theDiv.innerHTML = "Search for cards based on name, set, ability, and more. Use <strong>,</strong> to add another criteria (so, search for <strong>Adam,Fall of Man</strong> to find cards that match both \"Fall of Man\" and \"Adam\"). Use <strong>;</strong> to add another search."
 		+ "<br /><p>You can also search certain parts of cards. Begin a part of your search with any of the following to search in that part of the card.</p><p>Name: (or N:) <br />Set: (or S:) <br />Type: (or T:) <br />Brigade: (or B:) <br />Strength: (or X/:) <br />Toughness: (or /X:) <br />Class: (or C:) <br />Identifier: (or I:) <br />Ability: (or A:) <br />Rarity: (or R:) <br />Reference: (or Ref:)</p><p>Some examples... <br />Type:Dominant,Brigade:Good <br />Type:Hero,Ability:Lost Soul <br />ref:Kings 19</p>";
 	return theDiv;
+}
+
+function toggleLocalTesting() {
+	var newCardDataUrl = cardDataUrlPrev;
+	cardDataUrlPrev = cardDataUrl;
+	cardDataUrl = newCardDataUrl;
+
+	var newImageUrl = cardImageBaseUrlPrev;
+	cardImageBaseUrlPrev = cardImageBaseUrl;
+	cardImageBaseUrl = newImageUrl;
+
+	console.log("Card Data Url: " + cardDataUrl);
+	console.log("Card Image Url: " + cardImageBaseUrl);
+	loadCardListText();
 }
