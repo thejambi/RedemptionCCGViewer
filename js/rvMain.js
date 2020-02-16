@@ -232,7 +232,7 @@ function toggleLocalTesting() {
 	cardImageBaseUrlPrev = cardImageBaseUrl;
 	cardImageBaseUrl = newImageUrl;
 
-	console.log("Card Data Url: " + cardDataUrl);
-	console.log("Card Image Url: " + cardImageBaseUrl);
+	debug("Card Data Url: " + cardDataUrl);
+	debug("Card Image Url: " + cardImageBaseUrl);
 	loadCardListText();
 }
