@@ -22,7 +22,44 @@ function Card(dataLine) {
 	if (this.imgFile.includes(".jpg")) {
 		this.imgFile = this.imgFile.replace(".jpg","");
 	}
+
+	this.decideTestament();
 }
+
+var otBooks = [
+	'genesis',
+	'exodus',
+	'leviticus'
+];
+
+var ntBooks = [
+	'matthew',
+	'mark',
+	'luke',
+	'john'
+];
+
+Card.prototype.decideTestament = function() {
+	this.testament = "";
+	var ref = this.reference.toLowerCase();
+
+	for (var i in otBooks) {
+		var otBook = otBooks[i];
+		if (ref.includes(otBook)) {
+			this.testament += " OT ";
+			break;
+		}
+	}
+
+	for (var i in ntBooks) {
+		var ntBook = ntBooks[i];
+		if (ref.includes(ntBook)) {
+			this.testament += " NT ";
+			yepped = true;
+			break;
+		}
+	}
+};
 
 Card.prototype.getResultListDiv = function() {
 	var theDiv = document.createElement("div");

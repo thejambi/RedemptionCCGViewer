@@ -201,6 +201,11 @@ function cardMatchesFilterText(card, filterText) {
 					case "REF":
 						cardPartValue = card.reference;
 						break;
+					case "TESTAMENT":
+					case "TST":
+					case "TEST":
+						cardPartValue = card.testament;
+						break;
 					default:
 						break;
 				}
