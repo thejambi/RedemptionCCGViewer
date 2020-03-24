@@ -229,6 +229,8 @@ function getAboutDiv() {
 }
 
 function toggleLocalTesting() {
+	debugOn = true;
+	
 	var newCardDataUrl = cardDataUrlPrev;
 	cardDataUrlPrev = cardDataUrl;
 	cardDataUrl = newCardDataUrl;
