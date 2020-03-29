@@ -90,22 +90,36 @@ var ntBooks = [
 
 Card.prototype.decideTestament = function() {
 	this.testament = "";
-	var ref = this.reference.toLowerCase();
 
-	for (var i in otBooks) {
-		var otBook = otBooks[i];
-		if (ref.includes(otBook)) {
-			this.testament += " OT ";
-			break;
-		}
+	/** Assuming that a O.T. or N.T. reference in identifier text
+	 * also matches the card's given testament identity.
+	 * This seems to be the case currently but may not be future-proof.
+	 */
+	if (this.identifier.includes("O.T.")) {
+		this.testament += " OT ";
+	}
+	if (this.identifier.includes("N.T.")) {
+		this.testament += " NT ";
 	}
 
-	for (var i in ntBooks) {
-		var ntBook = ntBooks[i];
-		if (ref.includes(ntBook)) {
-			this.testament += " NT ";
-			yepped = true;
-			break;
+	if (this.testament === "") {
+		var ref = this.reference.toLowerCase();
+
+		for (var i in otBooks) {
+			var otBook = otBooks[i];
+			if (ref.includes(otBook)) {
+				this.testament += " OT ";
+				break;
+			}
+		}
+
+		for (var i in ntBooks) {
+			var ntBook = ntBooks[i];
+			if (ref.includes(ntBook)) {
+				this.testament += " NT ";
+				yepped = true;
+				break;
+			}
 		}
 	}
 };
