@@ -98,6 +98,7 @@ function updateSearchLinkTag() {
 }
 
 var requiredFilterLength = 3;
+var applyDeckSort = false;
 function filterCards() {
 	var filterTextFull = cardFilterTextBox.value.trim().toUpperCase();
 	filterEchoDiv.innerText = filterTextFull;
@@ -112,6 +113,14 @@ function filterCards() {
 		if (!resultCards.includes(card)) {
 			for (var filterTextIndex in filterTextList) {
 				var filterText = filterTextList[filterTextIndex];
+				if ("SORT:DECK" === filterText) {
+					applyDeckSort = true;
+				}
+				if ("DEBUG:ON" === filterText) {
+					debugOn = true;
+				} else if ("DEBUG:OFF" === filterText) {
+					debugOn = false;
+				}
 				if (filterText.length >= requiredFilterLength
 						&& cardMatchesFilterText(card, filterText)) {
 					resultCards.push(card);
@@ -119,6 +128,10 @@ function filterCards() {
 				}
 			}
 		}
+	}
+
+	if (applyDeckSort) {
+		applyDeckSortToCardsList(resultCards);
 	}
 
 	debug("--- Filter Results ---");
@@ -139,6 +152,12 @@ function filterCards() {
 	if (resultCards.length === 0) {
 		resultList.appendChild(getAboutDiv());
 	}
+}
+
+function applyDeckSortToCardsList(cardList) {
+	points.sort(function(card1, card2) {
+		
+	});
 }
 
 function cardMatchesFilterText(card, filterText) {
@@ -224,7 +243,10 @@ function cardMatchesFilterText(card, filterText) {
 function getAboutDiv() {
 	var theDiv = document.createElement("div");
 	theDiv.innerHTML = "Search for cards based on name, set, ability, and more. Use <strong>,</strong> to add another criteria (so, search for <strong>Adam,Fall of Man</strong> to find cards that match both \"Fall of Man\" and \"Adam\"). Use <strong>;</strong> to add another search."
-		+ "<br /><p>You can also search certain parts of cards. Begin a part of your search with any of the following to search in that part of the card.</p><p>Name: (or N:) <br />Set: (or S:) <br />Type: (or T:) <br />Brigade: (or B:) <br />Strength: (or X/:) <br />Toughness: (or /X:) <br />Class: (or C:) <br />Identifier: (or I:) <br />Ability: (or A:) <br />Rarity: (or R:) <br />Reference: (or Ref:)</p><p>Some examples... <br />Type:Dominant,Brigade:Good <br />Type:Hero,Ability:Lost Soul <br />ref:Kings 19</p>";
+		+ "<br /><p>You can also search certain parts of cards. Begin a part of your search with any of the following to search in that part of the card.</p><p>Name: (or N:) <br />Set: (or S:) <br />Type: (or T:) <br />Brigade: (or B:) <br />Strength: (or X/:) <br />Toughness: (or /X:) <br />Class: (or C:) <br />Identifier: (or I:) <br />Ability: (or A:) <br />Rarity: (or R:) <br />Reference: (or Ref:) <br />[Special filter] Testament: (or tst:) <i>OT</i> or <i>NT</i> ";
+		// + "<br />[Special sort] Sort:deck (Sort cards by type for a deck listing) "
+		+ "</p>";
+		+ "<p>Some examples... <br />Type:Dominant,Brigade:Good <br />Type:Hero,Ability:Lost Soul <br />ref:Kings 19</p>";
 	return theDiv;
 }
 

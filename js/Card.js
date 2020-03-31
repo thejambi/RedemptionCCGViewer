@@ -138,6 +138,12 @@ Card.prototype.getResultListDiv = function() {
 	theImg.title = this.name;
 	theDiv.appendChild(theImg);
 
+	if (debugOn) {
+		var cardInfo = document.createElement("div");
+		cardInfo.innerText = this.dataLine;
+		theDiv.appendChild(cardInfo);
+	}
+
 	return theDiv;
 };
 
@@ -158,6 +164,13 @@ Card.prototype.getNameOnlyDiv = function() {
 		theImg.alt = self.name;
 		theImg.title = self.name;
 		this.appendChild(theImg);
+
+		if (debugOn) {
+			var cardInfo = document.createElement("div");
+			cardInfo.innerText = self.dataLine;
+			this.appendChild(cardInfo);
+		}
+
 		this.onclick = null;
 	};
 
