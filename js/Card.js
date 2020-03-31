@@ -129,6 +129,9 @@ Card.prototype.getResultListDiv = function() {
 	theDiv.classList.add("resultCard");
 
 	var nameDiv = document.createElement("div");
+	if (debugOn) {
+		nameDiv.style["font-weight"] = "bold";
+	}
 	nameDiv.innerText = this.name;
 	theDiv.appendChild(nameDiv);
 
@@ -139,12 +142,17 @@ Card.prototype.getResultListDiv = function() {
 	theDiv.appendChild(theImg);
 
 	if (debugOn) {
-		var cardInfo = document.createElement("div");
-		cardInfo.innerText = this.dataLine;
-		theDiv.appendChild(cardInfo);
+		theDiv.appendChild(this.buildCardInfoElement());
 	}
 
 	return theDiv;
+};
+
+Card.prototype.buildCardInfoElement = function() {
+	var cardInfo = document.createElement("div");
+	cardInfo.style["font-style"] = "italic";
+	cardInfo.innerText = this.allPropertiesStringForDisplay();
+	return cardInfo;
 };
 
 Card.prototype.getNameOnlyDiv = function() {
@@ -155,6 +163,9 @@ Card.prototype.getNameOnlyDiv = function() {
 	theDiv.classList.add("nameOnly");
 
 	var nameDiv = document.createElement("div");
+	if (debugOn) {
+		nameDiv.style["font-weight"] = "bold";
+	}
 	nameDiv.innerText = this.name;
 	theDiv.appendChild(nameDiv);
 
@@ -166,9 +177,7 @@ Card.prototype.getNameOnlyDiv = function() {
 		this.appendChild(theImg);
 
 		if (debugOn) {
-			var cardInfo = document.createElement("div");
-			cardInfo.innerText = self.dataLine;
-			this.appendChild(cardInfo);
+			this.appendChild(self.buildCardInfoElement());
 		}
 
 		this.onclick = null;
@@ -194,4 +203,19 @@ Card.prototype.allPropertiesString = function() {
 			+ this.specialAbility 
 			+ this.rarity 
 			+ this.reference;
+};
+
+Card.prototype.allPropertiesStringForDisplay = function() {
+	return "Name: " + this.name + " | "
+			+ "Set: " + this.set + " | "
+			+ "Image Name: " + this.imgFile + " | "
+			+ "Type: " + this.type + " | "
+			+ "Brigade: " + this.brigade + " | "
+			+ "Strength: " + this.strength + " | "
+			+ "Toughness: " + this.toughness + " | "
+			+ "Class: " + this.class + " | "
+			+ "Identifier: " + this.identifier + " | "
+			+ "Special Ability: " + this.specialAbility + " | "
+			+ "Rarity: " + this.rarity + " | "
+			+ "Reference: " + this.reference;
 };
