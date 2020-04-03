@@ -8,6 +8,8 @@ var cardDataUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG
 var cardImageBaseUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG/RedemptionQuick/sets/setimages/general/";
 /* --- */
 
+var nameOnlyClass = "nameOnly";
+
 var cardListText = "";
 var cardFilterTextBox;
 var filterEchoDiv;
@@ -80,7 +82,6 @@ function processCardList() {
 var timeoutId;
 var filterTimeoutWait = 600;
 function cardFilterChanged() {
-	debug(cardFilterTextBox.value);
 	clearTimeout(timeoutId);
 	debug("timeout cleared");
 	timeoutId = setTimeout(function() {
@@ -264,4 +265,15 @@ function toggleLocalTesting() {
 	debug("Card Data Url: " + cardDataUrl);
 	debug("Card Image Url: " + cardImageBaseUrl);
 	loadCardListText();
+}
+
+function revealMoreCards() {
+	var moreCards = resultList.children;
+	var numRevealed = 0;
+	for (var i = 0; i < moreCards.length && numRevealed < 5; i++) {
+		if (moreCards[i].classList.contains(nameOnlyClass)) {
+			moreCards[i].click();
+			numRevealed++;
+		}
+	}
 }

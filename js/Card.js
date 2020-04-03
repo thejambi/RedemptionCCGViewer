@@ -160,7 +160,7 @@ Card.prototype.getNameOnlyDiv = function() {
 
 	var theDiv = document.createElement("div");
 	theDiv.classList.add("resultCard");
-	theDiv.classList.add("nameOnly");
+	theDiv.classList.add(nameOnlyClass);
 
 	var nameDiv = document.createElement("div");
 	if (debugOn) {
@@ -169,7 +169,7 @@ Card.prototype.getNameOnlyDiv = function() {
 	nameDiv.innerText = this.name;
 	theDiv.appendChild(nameDiv);
 
-	theDiv.onclick = function(e){
+	theDiv.onclick = function(e) {
 		var theImg = document.createElement("img");
 		theImg.src = cardImageBaseUrl + self.imgFile + ".jpg";
 		theImg.alt = self.name;
@@ -181,6 +181,7 @@ Card.prototype.getNameOnlyDiv = function() {
 		}
 
 		this.onclick = null;
+		this.classList.remove(nameOnlyClass);
 	};
 
 	return theDiv;
