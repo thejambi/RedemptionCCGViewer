@@ -145,6 +145,8 @@ Card.prototype.getResultListDiv = function() {
 		theDiv.appendChild(this.buildCardInfoElement());
 	}
 
+	this.addDoubleClickToCardDiv(theDiv);
+
 	return theDiv;
 };
 
@@ -184,7 +186,15 @@ Card.prototype.getNameOnlyDiv = function() {
 		this.classList.remove(nameOnlyClass);
 	};
 
+	this.addDoubleClickToCardDiv(theDiv);
+
 	return theDiv;
+};
+
+Card.prototype.addDoubleClickToCardDiv = function(theDiv) {
+	theDiv.ondblclick = function(e) {
+		revealMoreCards();
+	};
 };
 
 Card.prototype.toString = function() {
