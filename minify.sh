@@ -1,21 +1,9 @@
 #!/bin/bash
-
-previouspath=$(ls rvmin*)
-echo Replacing: $previouspath
-
-rm rvmin*.js
-
-timestamp=$(date "+%Y%m%d-%H%M%S")
-##### Following line for rvmin_TIMESTAMP.js
-# filepath="rvmin_$timestamp.js"
-##### Following line for rvmin.js always
+rm rvmin.js
 filepath="rvmin.js"
-echo With: $filepath
+echo Creating rvmin file: $filepath
 
-# uglifyjs js/*.js js/*/*.js -o $filepath
 uglifyjs js/*.js -o $filepath
-
-sed -i -e "s@$previouspath@$filepath@g" index.html
-cp index.html test.html
+# For directories in js/, can do this for example: # uglifyjs js/*.js js/*/*.js js/*/*/*.js -o $filepath
 
 echo Done
