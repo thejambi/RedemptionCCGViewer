@@ -18,6 +18,9 @@ function Card(dataLine) {
 	this.specialAbility = this.dataParts[i++];
 	this.rarity = this.dataParts[i++];
 	this.reference = this.dataParts[i++];
+	this.unknownValue = this.dataParts[i++];
+	this.alignment = this.dataParts[i++];
+	this.legality = this.dataParts[i++];
 
 	if (this.imgFile.includes(".jpg")) {
 		this.imgFile = this.imgFile.replace(".jpg","");
