@@ -231,5 +231,6 @@ Card.prototype.allPropertiesStringForDisplay = function() {
 			+ "<strong>Identifier:</strong> " + this.identifier + " | "
 			+ "<strong>Special Ability:</strong> " + this.specialAbility + " | "
 			+ "<strong>Rarity:</strong> " + this.rarity + " | "
-			+ "<strong>Reference:</strong> " + this.reference;
+			+ "<strong>Reference:</strong> " + this.reference + " | "
+			+ "<strong>Legality:</strong> " + this.legality;
 };
