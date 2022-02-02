@@ -156,7 +156,7 @@ Card.prototype.getResultListDiv = function() {
 Card.prototype.buildCardInfoElement = function() {
 	var cardInfo = document.createElement("div");
 	cardInfo.style["font-style"] = "italic";
-	cardInfo.innerText = this.allPropertiesStringForDisplay();
+	cardInfo.innerHTML = this.allPropertiesStringForDisplay();
 	return cardInfo;
 };
 
@@ -220,16 +220,16 @@ Card.prototype.allPropertiesString = function() {
 };
 
 Card.prototype.allPropertiesStringForDisplay = function() {
-	return "Name: " + this.name + " | "
-			+ "Set: " + this.set + " | "
-			+ "Image Name: " + this.imgFile + " | "
-			+ "Type: " + this.type + " | "
-			+ "Brigade: " + this.brigade + " | "
-			+ "Strength: " + this.strength + " | "
-			+ "Toughness: " + this.toughness + " | "
-			+ "Class: " + this.class + " | "
-			+ "Identifier: " + this.identifier + " | "
-			+ "Special Ability: " + this.specialAbility + " | "
-			+ "Rarity: " + this.rarity + " | "
-			+ "Reference: " + this.reference;
+	return "<strong>Name:</strong> " + this.name + " | "
+			+ "<strong>Set:</strong> " + this.set + " | "
+			+ "<strong>Image Name:</strong> " + this.imgFile + " | "
+			+ "<strong>Type:</strong> " + this.type + " | "
+			+ "<strong>Brigade:</strong> " + this.brigade + " | "
+			+ "<strong>Strength:</strong> " + this.strength + " | "
+			+ "<strong>Toughness:</strong> " + this.toughness + " | "
+			+ "<strong>Class:</strong> " + this.class + " | "
+			+ "<strong>Identifier:</strong> " + this.identifier + " | "
+			+ "<strong>Special Ability:</strong> " + this.specialAbility + " | "
+			+ "<strong>Rarity:</strong> " + this.rarity + " | "
+			+ "<strong>Reference:</strong> " + this.reference;
 };
