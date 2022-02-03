@@ -5,6 +5,11 @@ function Card(dataLine) {
 	this.dataLine = dataLine;
 	this.dataParts = dataLine.split("\t");
 
+	if (this.dataParts.length !== 15) {
+		debug("Card definition not complete: ");
+		debug(this.dataLine);
+	}
+
 	var i = 0;
 	this.name = this.dataParts[i++];
 	this.set = this.dataParts[i++];

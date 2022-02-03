@@ -241,7 +241,12 @@ function cardMatchesFilterText(card, filterText) {
 					default:
 						break;
 				}
-				chunkFound = cardPartValue.toUpperCase().includes(matchValueStr);
+				if (cardPartValue === undefined) {
+					debug("No value to match on for card: ");
+					debug(card);
+				} else {
+					chunkFound = cardPartValue.toUpperCase().includes(matchValueStr);
+				}
 			}
 		} else {
 			chunkFound = card.dataLine.toUpperCase().includes(filterTextChunk);
