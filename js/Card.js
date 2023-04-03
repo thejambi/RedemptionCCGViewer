@@ -132,24 +132,52 @@ Card.prototype.decideTestament = function() {
 	}
 };
 
-Card.prototype.getResultListDiv = function() {
+Card.prototype.getResultListDiv = function(shouldBuildImageNow) {
+	var imageUrl = cardImageBaseUrl + this.imgFile + ".jpg";
+
 	var theDiv = document.createElement("div");
 	theDiv.classList.add("resultCard");
+	if (!shouldBuildImageNow) {
+		theDiv.classList.add(nameOnlyClass);
+	}
 
 	var nameDiv = document.createElement("div");
 	if (debugOn) {
 		nameDiv.style["font-weight"] = "bold";
 	}
+	nameDiv.style["width"] = "95%";
+	nameDiv.style["max-width"] = "346px";
 	nameDiv.innerText = this.name;
+
+	var copyImageLinkButton = document.createElement("button");
+	copyImageLinkButton.style["float"] = "right";
+	copyImageLinkButton.style["display"] = "none";
+	copyImageLinkButton.innerText = "Copy Image Link";
+	copyImageLinkButton.onclick = (e) => {
+		copyTextToClipboard(imageUrl, copyImageLinkButton);
+	};
+	nameDiv.appendChild(copyImageLinkButton);
+
 	theDiv.appendChild(nameDiv);
 
-	var theImg = document.createElement("img");
-	theImg.src = cardImageBaseUrl + this.imgFile + ".jpg";
-	theImg.alt = this.name;
-	theImg.title = this.name;
-	theDiv.appendChild(theImg);
+	if (shouldBuildImageNow) {
+		var theImg = this.buildImageElement(imageUrl, copyImageLinkButton);
+		theDiv.appendChild(theImg);
+	} else {
+		theDiv.onclick = (e) => {
+			var theImg = this.buildImageElement(imageUrl, copyImageLinkButton);
+			theDiv.appendChild(theImg);
 
-	if (debugOn) {
+			if (debugOn) {
+				theDiv.appendChild(this.buildCardInfoElement());
+			}
+
+			theDiv.onclick = null;
+			theDiv.classList.remove(nameOnlyClass);
+		};
+	}
+
+	if (debugOn && shouldBuildImageNow) {
 		theDiv.appendChild(this.buildCardInfoElement());
 	}
 
@@ -158,45 +186,22 @@ Card.prototype.getResultListDiv = function() {
 	return theDiv;
 };
 
+Card.prototype.buildImageElement = function(imageUrl, copyImageLinkButton) {
+	var theImg = document.createElement("img");
+	theImg.src = imageUrl;
+	theImg.alt = this.name;
+	theImg.title = this.name;
+	theImg.onclick = (e) => {
+		copyImageLinkButton.style["display"] = "";
+	};
+	return theImg;
+};
+
 Card.prototype.buildCardInfoElement = function() {
 	var cardInfo = document.createElement("div");
 	cardInfo.style["font-style"] = "italic";
 	cardInfo.innerHTML = this.allPropertiesStringForDisplay();
 	return cardInfo;
-};
-
-Card.prototype.getNameOnlyDiv = function() {
-	var self = this;
-
-	var theDiv = document.createElement("div");
-	theDiv.classList.add("resultCard");
-	theDiv.classList.add(nameOnlyClass);
-
-	var nameDiv = document.createElement("div");
-	if (debugOn) {
-		nameDiv.style["font-weight"] = "bold";
-	}
-	nameDiv.innerText = this.name;
-	theDiv.appendChild(nameDiv);
-
-	theDiv.onclick = function(e) {
-		var theImg = document.createElement("img");
-		theImg.src = cardImageBaseUrl + self.imgFile + ".jpg";
-		theImg.alt = self.name;
-		theImg.title = self.name;
-		this.appendChild(theImg);
-
-		if (debugOn) {
-			this.appendChild(self.buildCardInfoElement());
-		}
-
-		this.onclick = null;
-		this.classList.remove(nameOnlyClass);
-	};
-
-	this.addDoubleClickToCardDiv(theDiv);
-
-	return theDiv;
 };
 
 Card.prototype.addDoubleClickToCardDiv = function(theDiv) {

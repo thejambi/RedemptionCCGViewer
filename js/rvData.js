@@ -59,6 +59,24 @@ function debug(str) {
     }
 }
 
+/* Clipboard */
+async function copyTextToClipboard(theText, triggerButton) {
+	if (!navigator.clipboard) {
+		// Clipboard API not available
+		return;
+	}
+	try {
+		await navigator.clipboard.writeText(theText);
+    if (triggerButton) {
+      var btnText = triggerButton.innerText;
+      triggerButton.innerText = "Copied!";
+      setTimeout(() => { triggerButton.innerText = btnText }, 3000);
+    }
+	} catch (err) {
+		console.error('Failed to copy!', err);
+	}
+}
+
 
 function arrayIncludesAll(array1, array2) {
   for (var i = 0; i < array2.length; i++) {
