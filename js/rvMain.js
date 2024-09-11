@@ -122,6 +122,10 @@ function filterCards() {
 				} else if ("DEBUG:OFF" === filterText) {
 					debugOn = false;
 				}
+				if (filterText.includes("CARDDATA:")) {
+					var newCardDataUrl = filterText.substring(filterText.indexOf(":") + 1);
+					setCardDataLocation(newCardDataUrl);
+				}
 				if (filterText.length >= requiredFilterLength
 						&& cardMatchesFilterText(card, filterText)) {
 					resultCards.push(card);
@@ -282,6 +286,19 @@ function toggleLocalTesting() {
 	debug("Card Data Url: " + cardDataUrl);
 	debug("Card Image Url: " + cardImageBaseUrl);
 	loadCardListText();
+}
+
+function setCardDataLocation(newCardDataUrl) {
+	if (newCardDataUrl.endsWith('carddata.txt')) {
+		cardDataUrlPrev = cardDataUrl;
+		cardDataUrl = newCardDataUrl;
+
+		newImageUrl = url.replace('carddata.txt', 'setimages/general/');
+		cardImageBaseUrlPrev = cardImageBaseUrl;
+		cardImageBaseUrl = newImageUrl;
+
+		loadCardListText();
+	}
 }
 
 function revealMoreCards() {
