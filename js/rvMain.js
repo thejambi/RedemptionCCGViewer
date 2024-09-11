@@ -289,11 +289,11 @@ function toggleLocalTesting() {
 }
 
 function setCardDataLocation(newCardDataUrl) {
-	if (newCardDataUrl.endsWith('carddata.txt')) {
+	if (newCardDataUrl.endsWith('CARDDATA.TXT')) {
 		cardDataUrlPrev = cardDataUrl;
 		cardDataUrl = newCardDataUrl;
 
-		newImageUrl = url.replace('carddata.txt', 'setimages/general/');
+		newImageUrl = url.replace('CARDDATA.TXT', 'setimages/general/');
 		cardImageBaseUrlPrev = cardImageBaseUrl;
 		cardImageBaseUrl = newImageUrl;
 
