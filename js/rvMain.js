@@ -126,7 +126,7 @@ function filterCards() {
 					debugOn = false;
 				}
 				if (filterText.includes("CARDDATA:")) {
-					var newCardDataUrl = filterText.substring(filterText.indexOf(":") + 1);
+					var newCardDataUrl = filterText.substring(cardFilterTextBox.value.trim().indexOf(":") + 1);
 					setCardDataLocation(newCardDataUrl);
 				}
 				if (filterText.length >= requiredFilterLength
