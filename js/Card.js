@@ -5,15 +5,23 @@ function Card(dataLine) {
 	this.dataLine = dataLine;
 	this.dataParts = dataLine.split("\t");
 
-	if (this.dataParts.length !== 15) {
+	if (this.dataParts.length !== 15 && this.dataParts.length !== 16) {
 		debug("Card definition not complete: ");
 		debug(this.dataLine);
+	}
+
+	this.includeOfficialSetField = false;
+	if (this.dataParts.length === 16) {
+		this.includeOfficialSetField = true;
 	}
 
 	var i = 0;
 	this.name = this.dataParts[i++];
 	this.set = this.dataParts[i++];
 	this.imgFile = this.dataParts[i++];
+	if (this.includeOfficialSetField) {
+		this.officialSet = this.dataParts[i++];
+	}
 	this.type = this.dataParts[i++];
 	this.brigade = this.dataParts[i++];
 	this.strength = this.dataParts[i++];
@@ -218,6 +226,7 @@ Card.prototype.allPropertiesString = function() {
 	return this.name 
 			+ this.set 
 			+ this.imgFile 
+			+ this.includeOfficialSetField ? this.officialSet : ''
 			+ this.type 
 			+ this.brigade 
 			+ this.strength 
@@ -233,6 +242,7 @@ Card.prototype.allPropertiesStringForDisplay = function() {
 	return "<strong>Name:</strong> " + this.name + " | "
 			+ "<strong>Set:</strong> " + this.set + " | "
 			+ "<strong>Image Name:</strong> " + this.imgFile + " | "
+			+ "<strong>Set Name:</strong> " + this.officialSet + " | "
 			+ "<strong>Type:</strong> " + this.type + " | "
 			+ "<strong>Brigade:</strong> " + this.brigade + " | "
 			+ "<strong>Strength:</strong> " + this.strength + " | "

@@ -63,6 +63,7 @@ function prepareCardFilterTextBox() {
 }
 
 function loadCardListText() {
+	debug("Loading card list text...");
 	$.get(cardDataUrl, function(data) {
 		cardListText = data;
 		processCardList();
@@ -70,6 +71,7 @@ function loadCardListText() {
 }
 
 function processCardList() {
+	debug("Processing card list...");
 	var lines = cardListText.split("\n");
 	cardList = [];
 	for (var i in lines) {
@@ -77,6 +79,12 @@ function processCardList() {
 		if (i > 0 && line && line.trim() !== "") {
 			cardList.push(new Card(line));
 		}
+	}
+
+	if (applyDeckSort) {
+		applyDeckSortToCardsList(cardList);
+	} else if (applyAlphaSort) {
+		applyAlphaSortToCardsList(cardList);
 	}
 }
 
@@ -102,7 +110,7 @@ function updateSearchLinkTag() {
 }
 
 var requiredFilterLength = 3;
-var applyDeckSort = false;
+var applyDeckSort = true;
 function filterCards() {
 	var filterTextOrig = cardFilterTextBox.value.trim();
 	var filterTextFull = cardFilterTextBox.value.trim().toUpperCase();
@@ -118,6 +126,21 @@ function filterCards() {
 		var filterText = filterTextList[filterTextIndex];
 		if ("SORT:DECK" === filterText) {
 			applyDeckSort = true;
+			applyAlphaSort = false;
+
+			processCardList();
+		}
+		if ("SORT:ALPHA" === filterText) {
+			applyAlphaSort = true;
+			applyDeckSort = false;
+
+			processCardList();
+		}
+		if ("SORT:OFF" === filterText) {
+			applyDeckSort = false;
+			applyAlphaSort = false;
+
+			processCardList();
 		}
 		if ("DEBUG:ON" === filterText) {
 			debugOn = true;
@@ -144,10 +167,6 @@ function filterCards() {
 		}
 	}
 
-	if (applyDeckSort) {
-		applyDeckSortToCardsList(resultCards);
-	}
-
 	debug("--- Filter Results ---");
 	// clear resultList
 	while (resultList.lastChild) {
@@ -168,9 +187,80 @@ function filterCards() {
 	}
 }
 
+// Define custom orders for .type within .set and .brigade
+const typeOrderWithinSet = [
+	"Dominant", "Artifact", "Covenant", "Curse", "City", "Fortress", "Site",
+	"Lost Soul", "DAC", "DAE", "Hero/GE"
+];
+
+const typeOrderWithinBrigade = [
+	"Hero", "GE", "Evil Character", "EE"
+];
+
+const goodTypes = [ "Hero", "GE" ];
+const evilTypes = [ "Evil Character", "EE" ];
+
 function applyDeckSortToCardsList(cardList) {
-	points.sort(function(card1, card2) {
+	debug("SORTING!");
+	// Sorting function
+	cardList.sort((a, b) => {
+		// Sort rotation cards to top
+		if (a.legality > b.legality) return -1;
+		if (a.legality < b.legality) return 1;
+
+		// 1. Sort by .set (alphabetical)
+		if (a.set < b.set) return -1;
+		if (a.set > b.set) return 1;
+
+		// 2. Sort by .type within .set (based on custom priority)
+		let aTypeSetOrder = typeOrderWithinSet.indexOf(a.type);
+		let bTypeSetOrder = typeOrderWithinSet.indexOf(b.type);
+		if (aTypeSetOrder === -1) {
+			aTypeSetOrder = 99;
+		}
+		if (bTypeSetOrder === -1) {
+			bTypeSetOrder = 99;
+		}
+		if (aTypeSetOrder !== bTypeSetOrder) {
+			// Sort according to the custom order
+			return aTypeSetOrder - bTypeSetOrder;
+		}
+
+		// Next sort Good before bad
+		let aGood = goodTypes.indexOf(a.type) >= 0 ? 1 : 2;
+		let bGood = goodTypes.indexOf(b.type) >= 0 ? 1 : 2;
+		if (aGood !== bGood) {
+			return aGood - bGood;
+		}
+
+		// 3. Sort by .brigade (alphabetical)
+		if (a.brigade < b.brigade) return -1;
+		if (a.brigade > b.brigade) return 1;
+
+		// 4. Sort by .type within .brigade (based on custom priority)
+		const aTypeBrigadeOrder = typeOrderWithinBrigade.indexOf(a.type);
+		const bTypeBrigadeOrder = typeOrderWithinBrigade.indexOf(b.type);
+		if (aTypeBrigadeOrder !== bTypeBrigadeOrder) {
+			// If either is not in the custom order, they will be treated as having lower priority
+			return aTypeBrigadeOrder - bTypeBrigadeOrder;
+		}
+
+		// Sort by name last
+		if (a.name < b.name) return -1;
+		if (b.name < a.name) return 1;
 		
+		return 0;
+	});
+}
+
+function applyAlphaSortToCardsList(cardList) {
+	debug("SORTING!");
+	// Sorting function
+	cardList.sort((a, b) => {
+		// Sort by name
+		if (a.name < b.name) return -1;
+		if (b.name < a.name) return 1;
+		return 0;
 	});
 }
 
@@ -300,6 +390,7 @@ function toggleLocalTesting() {
 function setCardDataLocation(newCardDataUrl) {
 	currentlyFiltering = true;
 	if (newCardDataUrl.endsWith('carddata.txt') && cardDataUrl !== newCardDataUrl) {
+		debug("Loading new card data...");
 		cardDataUrlPrev = cardDataUrl;
 		cardDataUrl = newCardDataUrl;
 
