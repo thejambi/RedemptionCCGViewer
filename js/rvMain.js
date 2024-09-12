@@ -104,6 +104,7 @@ function updateSearchLinkTag() {
 var requiredFilterLength = 3;
 var applyDeckSort = false;
 function filterCards() {
+	var filterTextOrig = cardFilterTextBox.value.trim();
 	var filterTextFull = cardFilterTextBox.value.trim().toUpperCase();
 	filterEchoDiv.innerText = filterTextFull;
 	
@@ -112,23 +113,28 @@ function filterCards() {
 
 	var resultCards = [];
 
+	/* Text Box Commands */
+	for (var filterTextIndex in filterTextList) {
+		var filterText = filterTextList[filterTextIndex];
+		if ("SORT:DECK" === filterText) {
+			applyDeckSort = true;
+		}
+		if ("DEBUG:ON" === filterText) {
+			debugOn = true;
+		} else if ("DEBUG:OFF" === filterText) {
+			debugOn = false;
+		}
+		if (filterText.includes("CARDDATA:")) {
+			var newCardDataUrl = filterTextOrig.substring(filterTextOrig.indexOf(":") + 1);
+			setCardDataLocation(newCardDataUrl);
+		}
+	}
+
 	for (var i in cardList) {
 		var card = cardList[i];
 		if (!resultCards.includes(card)) {
 			for (var filterTextIndex in filterTextList) {
 				var filterText = filterTextList[filterTextIndex];
-				if ("SORT:DECK" === filterText) {
-					applyDeckSort = true;
-				}
-				if ("DEBUG:ON" === filterText) {
-					debugOn = true;
-				} else if ("DEBUG:OFF" === filterText) {
-					debugOn = false;
-				}
-				if (filterText.includes("CARDDATA:")) {
-					var newCardDataUrl = filterText.substring(cardFilterTextBox.value.trim().indexOf(":") + 1);
-					setCardDataLocation(newCardDataUrl);
-				}
 				if (filterText.length >= requiredFilterLength
 						&& cardMatchesFilterText(card, filterText)) {
 					resultCards.push(card);
@@ -293,11 +299,11 @@ function toggleLocalTesting() {
 
 function setCardDataLocation(newCardDataUrl) {
 	currentlyFiltering = true;
-	if (newCardDataUrl.endsWith('CARDDATA.TXT') && cardDataUrl !== newCardDataUrl) {
+	if (newCardDataUrl.endsWith('carddata.txt') && cardDataUrl !== newCardDataUrl) {
 		cardDataUrlPrev = cardDataUrl;
 		cardDataUrl = newCardDataUrl;
 
-		newImageUrl = newCardDataUrl.replace('CARDDATA.TXT', 'setimages/general/');
+		newImageUrl = newCardDataUrl.replace('carddata.txt', 'setimages/general/');
 		cardImageBaseUrlPrev = cardImageBaseUrl;
 		cardImageBaseUrl = newImageUrl;
 
