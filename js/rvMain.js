@@ -190,7 +190,7 @@ function filterCards() {
 // Define custom orders for .type within .set and .brigade
 const typeOrderWithinSet = [
 	"Dominant", "Artifact", "Covenant", "Curse", "City", "Fortress", "Site",
-	"Lost Soul", "DAC", "DAE", "Hero/GE"
+	"Lost Soul", "DAC", "Hero/Evil Character", "DAE", "GE/EE", "Hero/GE"
 ];
 
 const typeOrderWithinBrigade = [
