@@ -419,13 +419,13 @@ function setCardDataLocation(newCardDataUrl) {
 	currentlyFiltering = false;
 }
 
-function revealMoreCards() {
-	var moreCards = resultList.children;
-	var numRevealed = 0;
-	for (var i = 0; i < moreCards.length && numRevealed < 5; i++) {
-		if (moreCards[i].classList.contains(nameOnlyClass)) {
-			moreCards[i].click();
-			numRevealed++;
-		}
-	}
-}
+// function revealMoreCards() {
+// 	var moreCards = resultList.children;
+// 	var numRevealed = 0;
+// 	for (var i = 0; i < moreCards.length && numRevealed < 5; i++) {
+// 		if (moreCards[i].classList.contains(nameOnlyClass)) {
+// 			moreCards[i].click();
+// 			numRevealed++;
+// 		}
+// 	}
+// }
