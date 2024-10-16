@@ -196,6 +196,11 @@ function loadMoreCards(resultCards) {
 	if (loadedCards >= resultCards.length) {
 		window.onscroll = null;
 	}
+
+	// Show about text when no search results
+	if (resultCards.length === 0) {
+		resultList.appendChild(getAboutDiv());
+	}
 }
 
 // Define custom orders for .type within .set and .brigade
