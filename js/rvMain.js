@@ -14,7 +14,6 @@ var cardListText = "";
 var cardFilterTextBox;
 var filterEchoDiv;
 var resultList;
-var searchLinkTag;
 var baseUrl;
 var localStorage;
 var cardList = [];
@@ -23,11 +22,13 @@ var currentlyFiltering = false;
 var cardsPerPage = 20; // Number of cards to load per scroll
 var loadedCards = 0; // Counter to track how many cards are loaded so far
 
+var copyLinkButton;
+var searchLinkUrl;
+
 window.requestAnimationFrame(function() {
 	cardFilterTextBox = document.getElementById("cardFilterTextBox");
 	resultList = document.getElementById("resultList");
 	filterEchoDiv = document.getElementById("filterEcho");
-	searchLinkTag = document.getElementById("searchLink");
 	localStorage = new LocalStorage().storage;
 
 	setBaseUrl();
@@ -44,7 +45,11 @@ window.requestAnimationFrame(function() {
 		window.location.href = baseUrl;
 	};
 
-	searchLinkTag.href = window.location.href;
+	copyLinkButton = document.getElementById("copyLinkButton");
+
+	copyLinkButton.onclick = function() {
+		copyTextToClipboard(searchLinkUrl, copyLinkButton);
+	};
 
 	cardFilterChanged();
 });
@@ -98,18 +103,18 @@ function cardFilterChanged() {
 	debug("timeout cleared");
 	timeoutId = setTimeout(function() {
 		if (!currentlyFiltering) {
-			updateSearchLinkTag();
+			updateSearchLinkUrl();
 			filterCards();
 		}
 	}, filterTimeoutWait);
 }
 
-function updateSearchLinkTag() {
+function updateSearchLinkUrl() {
 	var urlParams = "f=" + encodeURIComponent(cardFilterTextBox.value.trim());
 	if (compressSearchForShareLink) {
 		urlParams = LZString.compressToEncodedURIComponent(urlParams);
 	}
-	searchLinkTag.href = baseUrl + "?" + urlParams;
+	searchLinkUrl = baseUrl + "?" + urlParams;
 }
 
 var requiredFilterLength = 3;
