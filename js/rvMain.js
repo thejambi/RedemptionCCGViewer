@@ -1,7 +1,10 @@
 import { compressToEncodedURIComponent } from 'lz-string';
+
 import { Card } from './Card.js';
 import { LocalStorage } from './LocalStorage.js';
 import { QueryString, compressSearchForShareLink, copyTextToClipboard as copyTextToClipboardFromData, debug, setDebugOn } from './rvData.js';
+import { debugOn } from './rvData';
+import { versionNumber } from './version.js';
 
 /* Redemption CCG Viewer Main */
 
@@ -31,8 +34,6 @@ var loadedCards = 0; // Counter to track how many cards are loaded so far
 var copyLinkButton;
 var searchLinkUrl;
 
-var versionNumber = "1.0.0"; // Define the version number
-
 window.requestAnimationFrame(function() {
 	cardFilterTextBox = document.getElementById("cardFilterTextBox");
 	resultList = document.getElementById("resultList");
@@ -59,11 +60,6 @@ window.requestAnimationFrame(function() {
 		copyTextToClipboard(searchLinkUrl, copyLinkButton);
 	};
 
-	// Show version number if debug mode is on
-	if (debugOn) {
-		showVersionNumber();
-	}
-
 	cardFilterChanged();
 });
 
@@ -80,6 +76,14 @@ function showVersionNumber() {
 	versionDiv.style.borderRadius = "5px";
 	versionDiv.innerText = "Version: " + versionNumber;
 	document.body.appendChild(versionDiv);
+}
+
+// Function to hide the version number
+function hideVersionNumber() {
+	var versionDiv = document.getElementById("versionNumber");
+	if (versionDiv) {
+		versionDiv.remove();
+	}
 }
 
 function setBaseUrl() {
@@ -99,7 +103,7 @@ function prepareCardFilterTextBox() {
 }
 
 function loadCardListText() {
-	debugOn("Loading card list text...");
+	debug("Loading card list text...");
 	fetch(cardDataUrl)
 		.then(response => response.text())
 		.then(data => {
@@ -185,8 +189,10 @@ function filterCards() {
 		}
 		if ("DEBUG:ON" === filterText) {
 			setDebugOn(true);
+			showVersionNumber();
 		} else if ("DEBUG:OFF" === filterText) {
 			setDebugOn(false);
+			hideVersionNumber();
 		}
 		if (filterText.includes("CARDDATA:")) {
 			var newCardDataUrl = filterTextOrig.substring(filterTextOrig.indexOf(":") + 1);

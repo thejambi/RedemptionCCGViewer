@@ -1,0 +1,13 @@
+{
+  "extends": "@parcel/config-default",
+  "transformers": {
+    "*.html": ["@parcel/transformer-html"]
+  },
+  "packagers": {
+    "*.html": "@parcel/packager-html"
+  },
+  "optimizers": {
+    "*.html": ["@parcel/optimizer-htmlnano"]
+  },
+  "reporters": ["@parcel/reporter-cli"]
+}
