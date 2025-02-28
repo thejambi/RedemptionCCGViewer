@@ -36,9 +36,38 @@
   </div>
 
   <div id='mainWrapper'>
+    <button id="toggleFilterMenuButton">Toggle Filter Builder</button>
+    <div id="filterMenu" class="filterMenu">
+      <h2>Search Filters</h2>
+      <label for="filterName">Name:</label>
+      <input type="text" id="filterName" class="filterInput"><br>
+      <label for="filterSetName">Set Name:</label>
+      <select id="filterSetName" class="filterInput">
+        <option value="">Any</option>
+        <!-- Options will be populated dynamically -->
+      </select><br>
+      <label for="filterType">Type:</label>
+      <select id="filterType" class="filterInput">
+        <option value="">Any</option>
+        <!-- Options will be populated dynamically -->
+      </select><br>
+      <label for="filterBrigade">Brigade:</label>
+      <select id="filterBrigade" class="filterInput">
+        <option value="">Any</option>
+        <!-- Options will be populated dynamically -->
+      </select><br>
+      <label for="filterAbility">Ability:</label>
+      <input type="text" id="filterAbility" class="filterInput"><br>
+      <label for="filterRarity">Rarity:</label>
+      <select id="filterRarity" class="filterInput">
+        <option value="">Any</option>
+        <!-- Options will be populated dynamically -->
+      </select><br>
+      <button id="addFilterButton">Add Filter</button>
+      <button id="clearFiltersButton">Clear Search</button>
+    </div>
 
       <input id="cardFilterTextBox" class="filterTextBox" type="text" name="cardFilterTextBox" value="" />
-      <!-- &nbsp;<button id="filterNowButton">Filter</button> -->
       &nbsp;<button id="copyLinkButton">Copy link to this search</button>
       <br />
       <div id="filterEcho"></div>
@@ -50,21 +79,6 @@
   </div>
 
   <div class="footer"></div>
-
-  <!-- Modal -->
-  <!-- The Modal -->
-  <!-- <div id="myMainModal" class="modal">
-    <div class="modal-content">
-      <span class="myMainModalClose">&nbsp;&times;
-      </span>
-      <div id='modalHeading'>&nbsp;</div>
-      <div id='modalMessage'>&nbsp;</div>
-    </div>
-  </div> -->
-  <!-- End Modal -->
-
-  <!-- jquery cloud reference -->
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
 
   <script type="module" src="./js/rvMain.js"></script>
 </body>

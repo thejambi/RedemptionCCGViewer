@@ -60,6 +60,20 @@ window.requestAnimationFrame(function() {
 		copyTextToClipboard(searchLinkUrl, copyLinkButton);
 	};
 
+	populateDropdowns();
+
+	document.getElementById("toggleFilterMenuButton").onclick = function() {
+		toggleFilterMenu();
+	};
+
+	document.getElementById("addFilterButton").onclick = function() {
+		addFilter();
+	};
+
+	document.getElementById("clearFiltersButton").onclick = function() {
+		clearFilters();
+	};
+
 	cardFilterChanged();
 });
 
@@ -109,6 +123,7 @@ function loadCardListText() {
 		.then(data => {
 			cardListText = data;
 			processCardList();
+			populateDropdowns(); // Populate dropdowns after processing card list
 		})
 		.catch(error => {
 			console.error('Error fetching card data:', error);
@@ -344,6 +359,9 @@ function cardMatchesFilterText(card, filterText) {
 					case "S":
 						cardPartValue = card.set;
 						break;
+					case "SETNAME":
+						cardPartValue = card.officialSet;
+						break;
 					case "IMGFILE":
 					case "IF":
 						cardPartValue = card.imgFile;
@@ -463,13 +481,82 @@ function setCardDataLocation(newCardDataUrl) {
 	currentlyFiltering = false;
 }
 
-// function revealMoreCards() {
-// 	var moreCards = resultList.children;
-// 	var numRevealed = 0;
-// 	for (var i = 0; i < moreCards.length && numRevealed < 5; i++) {
-// 		if (moreCards[i].classList.contains(nameOnlyClass)) {
-// 			moreCards[i].click();
-// 			numRevealed++;
-// 		}
-// 	}
-// }
+// Function to toggle the filter menu visibility
+function toggleFilterMenu() {
+	var filterMenu = document.getElementById("filterMenu");
+	if (filterMenu.classList.contains("show")) {
+		filterMenu.classList.remove("show");
+		setTimeout(() => {
+			filterMenu.style.display = "none";
+		}, 500); // Match the transition duration
+	} else {
+		filterMenu.style.display = "block";
+		setTimeout(() => {
+			filterMenu.classList.add("show");
+		}, 10); // Small delay to trigger the transition
+	}
+}
+
+// Function to add filters from the filter menu
+function addFilter() {
+	var filterName = document.getElementById("filterName").value.trim();
+	var filterSetName = document.getElementById("filterSetName").value.trim();
+	var filterType = document.getElementById("filterType").value.trim();
+	var filterBrigade = document.getElementById("filterBrigade").value.trim();
+	var filterAbility = document.getElementById("filterAbility").value.trim();
+	var filterRarity = document.getElementById("filterRarity").value.trim();
+
+	var filters = [];
+	if (filterName) filters.push("NAME:" + filterName);
+	if (filterSetName) filters.push("SETNAME:" + filterSetName);
+	if (filterType) filters.push("TYPE:" + filterType);
+	if (filterBrigade) filters.push("BRIGADE:" + filterBrigade);
+	if (filterAbility) filters.push("ABILITY:" + filterAbility);
+	if (filterRarity) filters.push("RARITY:" + filterRarity);
+
+	if (filters.length > 0) {
+		var currentFilters = cardFilterTextBox.value.trim();
+		if (currentFilters) {
+			cardFilterTextBox.value = currentFilters + ";" + filters.join(",");
+		} else {
+			cardFilterTextBox.value = filters.join(",");
+		}
+		cardFilterChanged();
+	}
+}
+
+// Function to clear all filters
+function clearFilters() {
+	document.getElementById("filterName").value = "";
+	document.getElementById("filterSetName").value = "";
+	document.getElementById("filterType").value = "";
+	document.getElementById("filterBrigade").value = "";
+	document.getElementById("filterAbility").value = "";
+	document.getElementById("filterRarity").value = "";
+	cardFilterTextBox.value = "";
+	cardFilterChanged();
+}
+
+// Function to populate dropdowns with options
+function populateDropdowns() {
+	const sets = [...new Set(cardList.map(card => card.set))].sort();
+	const setNames = [...new Set(cardList.map(card => card.officialSet))].sort();
+	const types = [...new Set(cardList.map(card => card.type))].sort();
+	const brigades = [...new Set(cardList.map(card => card.brigade))].sort();
+	const rarities = [...new Set(cardList.map(card => card.rarity))].sort();
+
+	populateDropdown("filterSetName", setNames);
+	populateDropdown("filterType", types);
+	populateDropdown("filterBrigade", brigades);
+	populateDropdown("filterRarity", rarities);
+}
+
+function populateDropdown(elementId, options) {
+	const dropdown = document.getElementById(elementId);
+	options.forEach(option => {
+		const opt = document.createElement("option");
+		opt.value = option;
+		opt.innerText = option;
+		dropdown.appendChild(opt);
+	});
+}
