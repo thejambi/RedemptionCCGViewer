@@ -1,0 +1,24 @@
+{
+  "name": "redemptionviewer",
+  "version": "1.0.0",
+  "description": "Card viewer for Redemption CCG",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html --open",
+    "build": "rimraf dist && parcel build index.html --public-url ./",
+    "deploy": "gh-pages -d dist",
+    "serve": "http-server dist"
+  },
+  "browserslist": "defaults and supports async-functions",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.13.3",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "lz-string": "^1.5.0"
+  }
+}

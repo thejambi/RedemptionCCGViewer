@@ -1,3 +1,9 @@
 test.html
 cardList/cardlist.txt
 index.html-e
+node_modules/
+package-lock.json
+.parcel-cache/
+.gitignore
+dist/
+.DS_Store

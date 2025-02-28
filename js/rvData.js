@@ -1,4 +1,4 @@
-var QueryString = function () {
+export var QueryString = function () {
 	var query_string = {};
 	var query = window.location.search.substring(1);
   
@@ -28,22 +28,22 @@ var QueryString = function () {
 	return query_string;
   }();
 
-var debugOn = false;
+export var debugOn = false;
 
 /* Set to true if building for iOS, else set to false */
-var ios = false;
+export var ios = false;
 
 /* Set to true if building for Android, else set to false */
-var runningOnAndroid = false;
+export var runningOnAndroid = false;
 
 
-var compressSearchForShareLink = true;
+export var compressSearchForShareLink = true;
 
 
 /* --- */
 
 
-function debug(str) {
+export function debug(str) {
     if (debugOn) {
       if (ios || QueryString.appType === 'ios') {
         try {
@@ -60,7 +60,7 @@ function debug(str) {
 }
 
 /* Clipboard */
-async function copyTextToClipboard(theText, triggerButton) {
+export async function copyTextToClipboard(theText, triggerButton) {
 	if (!navigator.clipboard) {
 		// Clipboard API not available
 		return;
@@ -78,7 +78,7 @@ async function copyTextToClipboard(theText, triggerButton) {
 }
 
 
-function arrayIncludesAll(array1, array2) {
+export function arrayIncludesAll(array1, array2) {
   for (var i = 0; i < array2.length; i++) {
     if (!array1.includes(array2[i])) {
       return false;
@@ -87,7 +87,7 @@ function arrayIncludesAll(array1, array2) {
   return true;
 }
 
-function copyArray(arr) {
+export function copyArray(arr) {
 	var copyArr = [];
 	for (var i = 0; i < arr.length; i++) {
 		copyArr.push(arr[i].getCopy());
@@ -96,7 +96,7 @@ function copyArray(arr) {
 }
 
 // Array shuffle
-function shuffleArray(array) {
+export function shuffleArray(array) {
   var i = 0
     , j = 0
     , temp = null
@@ -208,4 +208,9 @@ Array.prototype.equals = function (array) {
 }
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, "equals", {enumerable: false});
+
+export function setDebugOn(value) {
+	debugOn = value;
+	debug(`Debug mode is now ${debugOn ? 'ON' : 'OFF'}`);
+}
 

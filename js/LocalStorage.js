@@ -18,7 +18,7 @@ window.fakeStorage = {
 	}
 };
 
-function LocalStorage() {
+export function LocalStorage() {
 	var supported = this.localStorageSupported();
 	this.storage = supported ? window.localStorage : window.fakeStorage;
 }

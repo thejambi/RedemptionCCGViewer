@@ -1,5 +1,7 @@
+import { cardImageBaseUrl, nameOnlyClass, copyTextToClipboard } from './rvMain.js';
+import { debugOn } from './rvData';
 
-function Card(dataLine) {
+export function Card(dataLine) {
 	this.name = "";
 
 	this.dataLine = dataLine;
@@ -42,7 +44,7 @@ function Card(dataLine) {
 	this.decideTestament();
 }
 
-var otBooks = [
+export var otBooks = [
 	'genesis',
 	'exodus',
 	'leviticus',
@@ -81,7 +83,7 @@ var otBooks = [
 	'malachi'
 ];
 
-var ntBooks = [
+export var ntBooks = [
 	'matthew',
 	'mark',
 	'luke',
@@ -133,7 +135,7 @@ Card.prototype.decideTestament = function() {
 			var ntBook = ntBooks[i];
 			if (ref.includes(ntBook)) {
 				this.testament += " NT ";
-				yepped = true;
+				// yepped = true;
 				break;
 			}
 		}
