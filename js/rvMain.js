@@ -1,14 +1,20 @@
+import { compressToEncodedURIComponent } from 'lz-string';
+import { Card } from './Card.js';
+import { LocalStorage } from './LocalStorage.js';
+import { QueryString, compressSearchForShareLink, copyTextToClipboard as copyTextToClipboardFromData, debug, setDebugOn } from './rvData.js';
+
 /* Redemption CCG Viewer Main */
 
-var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/latest/RedemptionQuick/sets/carddata.txt";
-var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/latest/RedemptionQuick/sets/setimages/general/";
+export var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/latest/RedemptionQuick/sets/carddata.txt";
+export var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/latest/RedemptionQuick/sets/setimages/general/";
 
 /* For Testing: */
 var cardDataUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG/RedemptionQuick/sets/carddata.txt";
 var cardImageBaseUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG/RedemptionQuick/sets/setimages/general/";
 /* --- */
 
-var nameOnlyClass = "nameOnly";
+export var nameOnlyClass = "nameOnly";
+export { copyTextToClipboardFromData as copyTextToClipboard };
 
 var cardListText = "";
 var cardFilterTextBox;
@@ -24,6 +30,8 @@ var loadedCards = 0; // Counter to track how many cards are loaded so far
 
 var copyLinkButton;
 var searchLinkUrl;
+
+var versionNumber = "1.0.0"; // Define the version number
 
 window.requestAnimationFrame(function() {
 	cardFilterTextBox = document.getElementById("cardFilterTextBox");
@@ -51,8 +59,28 @@ window.requestAnimationFrame(function() {
 		copyTextToClipboard(searchLinkUrl, copyLinkButton);
 	};
 
+	// Show version number if debug mode is on
+	if (debugOn) {
+		showVersionNumber();
+	}
+
 	cardFilterChanged();
 });
+
+// Function to display the version number
+function showVersionNumber() {
+	var versionDiv = document.createElement("div");
+	versionDiv.id = "versionNumber";
+	versionDiv.style.position = "fixed";
+	versionDiv.style.bottom = "10px";
+	versionDiv.style.right = "10px";
+	versionDiv.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+	versionDiv.style.color = "white";
+	versionDiv.style.padding = "5px";
+	versionDiv.style.borderRadius = "5px";
+	versionDiv.innerText = "Version: " + versionNumber;
+	document.body.appendChild(versionDiv);
+}
 
 function setBaseUrl() {
 	baseUrl = window.location.href.split(/[?#]/)[0];
@@ -71,11 +99,16 @@ function prepareCardFilterTextBox() {
 }
 
 function loadCardListText() {
-	debug("Loading card list text...");
-	$.get(cardDataUrl, function(data) {
-		cardListText = data;
-		processCardList();
-	});
+	debugOn("Loading card list text...");
+	fetch(cardDataUrl)
+		.then(response => response.text())
+		.then(data => {
+			cardListText = data;
+			processCardList();
+		})
+		.catch(error => {
+			console.error('Error fetching card data:', error);
+		});
 }
 
 function processCardList() {
@@ -112,7 +145,7 @@ function cardFilterChanged() {
 function updateSearchLinkUrl() {
 	var urlParams = "f=" + encodeURIComponent(cardFilterTextBox.value.trim());
 	if (compressSearchForShareLink) {
-		urlParams = LZString.compressToEncodedURIComponent(urlParams);
+		urlParams = compressToEncodedURIComponent(urlParams);
 	}
 	searchLinkUrl = baseUrl + "?" + urlParams;
 }
@@ -151,9 +184,9 @@ function filterCards() {
 			processCardList();
 		}
 		if ("DEBUG:ON" === filterText) {
-			debugOn = true;
+			setDebugOn(true);
 		} else if ("DEBUG:OFF" === filterText) {
-			debugOn = false;
+			setDebugOn(false);
 		}
 		if (filterText.includes("CARDDATA:")) {
 			var newCardDataUrl = filterTextOrig.substring(filterTextOrig.indexOf(":") + 1);
@@ -393,7 +426,7 @@ function getAboutDiv() {
 }
 
 function toggleLocalTesting() {
-	debugOn = true;
+	setDebugOn(true);
 	
 	var newCardDataUrl = cardDataUrlPrev;
 	cardDataUrlPrev = cardDataUrl;

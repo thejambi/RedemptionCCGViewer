@@ -1,0 +1,22 @@
+{
+  "name": "redemptionviewer",
+  "version": "1.0.0",
+  "description": "Card viewer for Redemption CCG",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html",
+    "deploy": "gh-pages -d dist"
+  },
+  "browserslist": "defaults and supports async-functions",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.13.3"
+  },
+  "dependencies": {
+    "lz-string": "^1.5.0"
+  }
+}
