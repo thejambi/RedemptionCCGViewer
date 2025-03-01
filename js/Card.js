@@ -1,5 +1,5 @@
-import { cardImageBaseUrl, nameOnlyClass, copyTextToClipboard } from './rvMain.js';
-import { debugOn } from './rvData';
+import { cardImageBaseUrl, nameOnlyClass } from './rvMain.js';
+import { copyTextToClipboard, debugOn } from './rvData';
 
 export function Card(dataLine) {
 	this.name = "";

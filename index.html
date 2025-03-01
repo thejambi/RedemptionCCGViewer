@@ -37,10 +37,14 @@
 
   <div id='mainWrapper'>
     <button id="toggleFilterMenuButton">Toggle Filter Builder</button>
-    <div id="filterMenu" class="filterMenu">
-      <h2>Search Filters</h2>
+    <div id="filterMenu" class="filterMenu" style="display: none">
+      <!-- <h2>Search Filters</h2> -->
       <label for="filterName">Name:</label>
       <input type="text" id="filterName" class="filterInput"><br>
+      <label for="filterIdentifier">Identifier:</label>
+      <input type="text" id="filterIdentifier" class="filterInput"><br>
+      <label for="filterAbility">Ability:</label>
+      <input type="text" id="filterAbility" class="filterInput"><br>
       <label for="filterSetName">Set Name:</label>
       <select id="filterSetName" class="filterInput">
         <option value="">Any</option>
@@ -56,26 +60,30 @@
         <option value="">Any</option>
         <!-- Options will be populated dynamically -->
       </select><br>
-      <label for="filterAbility">Ability:</label>
-      <input type="text" id="filterAbility" class="filterInput"><br>
       <label for="filterRarity">Rarity:</label>
       <select id="filterRarity" class="filterInput">
         <option value="">Any</option>
         <!-- Options will be populated dynamically -->
       </select><br>
-      <button id="addFilterButton">Add Filter</button>
-      <button id="clearFiltersButton">Clear Search</button>
+      <label for="filterLegality">Legality:</label>
+      <select id="filterLegality" class="filterInput">
+        <option value="Rotation">Rotation</option>
+        <option value="Banned">Banned</option>
+        <option value="">Any</option>
+      </select><br>
+      <button id="addFilterButton">Add Additional Filter</button>
+      <button id="clearFiltersButton">Clear Searches</button>
     </div>
 
-      <input id="cardFilterTextBox" class="filterTextBox" type="text" name="cardFilterTextBox" value="" />
-      &nbsp;<button id="copyLinkButton">Copy link to this search</button>
-      <br />
-      <div id="filterEcho"></div>
-      <br />
-      <div id="resultList">
-        <div class="resultCard">
-        </div>
+    <input id="cardFilterTextBox" class="filterTextBox" type="text" name="cardFilterTextBox" value="" />
+    &nbsp;<button id="copyLinkButton">Copy link to this search</button>
+    <br />
+    <div id="filterEcho"></div>
+    <br />
+    <div id="resultList">
+      <div class="resultCard">
       </div>
+    </div>
   </div>
 
   <div class="footer"></div>

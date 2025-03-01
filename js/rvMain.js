@@ -2,7 +2,7 @@ import { compressToEncodedURIComponent } from 'lz-string';
 
 import { Card } from './Card.js';
 import { LocalStorage } from './LocalStorage.js';
-import { QueryString, compressSearchForShareLink, copyTextToClipboard as copyTextToClipboardFromData, debug, setDebugOn } from './rvData.js';
+import { QueryString, compressSearchForShareLink, copyTextToClipboard, debug, setDebugOn } from './rvData.js';
 import { debugOn } from './rvData';
 import { versionNumber } from './version.js';
 
@@ -17,7 +17,6 @@ var cardImageBaseUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLack
 /* --- */
 
 export var nameOnlyClass = "nameOnly";
-export { copyTextToClipboardFromData as copyTextToClipboard };
 
 var cardListText = "";
 var cardFilterTextBox;
@@ -67,12 +66,17 @@ window.requestAnimationFrame(function() {
 	};
 
 	document.getElementById("addFilterButton").onclick = function() {
-		addFilter();
+		addAdditionalFilter();
 	};
 
 	document.getElementById("clearFiltersButton").onclick = function() {
 		clearFilters();
 	};
+
+	// Add event listeners to filter inputs to apply filters automatically
+	document.querySelectorAll('.filterInput').forEach(input => {
+		input.addEventListener('input', applyFilter);
+	});
 
 	cardFilterChanged();
 });
@@ -257,8 +261,10 @@ function loadMoreCards(resultCards) {
 	}
 
 	// Show about text when no search results
-	if (resultCards.length === 0) {
-		resultList.appendChild(getAboutDiv());
+	if (resultCards.length === 0 && !document.getElementById("aboutDiv")) {
+		const aboutDiv = getAboutDiv();
+		aboutDiv.id = "aboutDiv";
+		resultList.appendChild(aboutDiv);
 	}
 }
 
@@ -497,22 +503,63 @@ function toggleFilterMenu() {
 	}
 }
 
-// Function to add filters from the filter menu
-function addFilter() {
+// Function to apply filters from the filter menu
+function applyFilter() {
 	var filterName = document.getElementById("filterName").value.trim();
+	var filterIdentifier = document.getElementById("filterIdentifier").value.trim();
+	var filterAbility = document.getElementById("filterAbility").value.trim();
 	var filterSetName = document.getElementById("filterSetName").value.trim();
 	var filterType = document.getElementById("filterType").value.trim();
 	var filterBrigade = document.getElementById("filterBrigade").value.trim();
-	var filterAbility = document.getElementById("filterAbility").value.trim();
 	var filterRarity = document.getElementById("filterRarity").value.trim();
+	var filterLegality = document.getElementById("filterLegality").value.trim();
 
 	var filters = [];
 	if (filterName) filters.push("NAME:" + filterName);
+	if (filterIdentifier) filters.push("IDENTIFIER:" + filterIdentifier);
+	if (filterAbility) filters.push("ABILITY:" + filterAbility);
 	if (filterSetName) filters.push("SETNAME:" + filterSetName);
 	if (filterType) filters.push("TYPE:" + filterType);
 	if (filterBrigade) filters.push("BRIGADE:" + filterBrigade);
-	if (filterAbility) filters.push("ABILITY:" + filterAbility);
 	if (filterRarity) filters.push("RARITY:" + filterRarity);
+	if (filterLegality) filters.push("LEGALITY:" + filterLegality);
+
+	var currentFilters = cardFilterTextBox.value.trim();
+	var lastSemiColonIndex = currentFilters.lastIndexOf(";");
+	if (lastSemiColonIndex !== -1) {
+		currentFilters = currentFilters.substring(0, lastSemiColonIndex + 1);
+	} else {
+		currentFilters = "";
+	}
+
+	if (filters.length > 0) {
+		cardFilterTextBox.value = currentFilters + filters.join(",");
+	} else {
+		cardFilterTextBox.value = currentFilters;
+	}
+	cardFilterChanged();
+}
+
+// Function to add additional filters from the filter menu
+function addAdditionalFilter() {
+	var filterName = document.getElementById("filterName").value.trim();
+	var filterIdentifier = document.getElementById("filterIdentifier").value.trim();
+	var filterAbility = document.getElementById("filterAbility").value.trim();
+	var filterSetName = document.getElementById("filterSetName").value.trim();
+	var filterType = document.getElementById("filterType").value.trim();
+	var filterBrigade = document.getElementById("filterBrigade").value.trim();
+	var filterRarity = document.getElementById("filterRarity").value.trim();
+	var filterLegality = document.getElementById("filterLegality").value.trim();
+
+	var filters = [];
+	if (filterName) filters.push("NAME:" + filterName);
+	if (filterIdentifier) filters.push("IDENTIFIER:" + filterIdentifier);
+	if (filterAbility) filters.push("ABILITY:" + filterAbility);
+	if (filterSetName) filters.push("SETNAME:" + filterSetName);
+	if (filterType) filters.push("TYPE:" + filterType);
+	if (filterBrigade) filters.push("BRIGADE:" + filterBrigade);
+	if (filterRarity) filters.push("RARITY:" + filterRarity);
+	if (filterLegality) filters.push("LEGALITY:" + filterLegality);
 
 	if (filters.length > 0) {
 		var currentFilters = cardFilterTextBox.value.trim();
@@ -523,16 +570,28 @@ function addFilter() {
 		}
 		cardFilterChanged();
 	}
+
+	// Clear the filter builder fields
+	document.getElementById("filterName").value = "";
+	document.getElementById("filterIdentifier").value = "";
+	document.getElementById("filterAbility").value = "";
+	document.getElementById("filterSetName").value = "";
+	document.getElementById("filterType").value = "";
+	document.getElementById("filterBrigade").value = "";
+	document.getElementById("filterRarity").value = "";
+	document.getElementById("filterLegality").value = "Rotation";
 }
 
 // Function to clear all filters
 function clearFilters() {
 	document.getElementById("filterName").value = "";
+	document.getElementById("filterIdentifier").value = "";
+	document.getElementById("filterAbility").value = "";
 	document.getElementById("filterSetName").value = "";
 	document.getElementById("filterType").value = "";
 	document.getElementById("filterBrigade").value = "";
-	document.getElementById("filterAbility").value = "";
 	document.getElementById("filterRarity").value = "";
+	document.getElementById("filterLegality").value = "Rotation";
 	cardFilterTextBox.value = "";
 	cardFilterChanged();
 }
