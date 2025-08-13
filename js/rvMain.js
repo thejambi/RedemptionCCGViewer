@@ -8,8 +8,8 @@ import { versionNumber } from './version.js';
 
 /* Redemption CCG Viewer Main */
 
-export var cardDataUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/latest/RedemptionQuick/sets/carddata.txt";
-export var cardImageBaseUrl = "https://raw.githubusercontent.com/thejambi/RedemptionLackeyCCG/latest/RedemptionQuick/sets/setimages/general/";
+export var cardDataUrl = "https://jalstad.github.io/RedemptionLackeyCCG/RedemptionQuick/sets/carddata.txt";
+export var cardImageBaseUrl = "https://jalstad.github.io/RedemptionLackeyCCG/RedemptionQuick/sets/setimages/general/";
 
 /* For Testing: */
 var cardDataUrlPrev = "file:///Users/zach/Programming/GitHub/RedemptionLackeyCCG/RedemptionQuick/sets/carddata.txt";
